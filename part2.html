@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statuesque Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow: hidden; /* Prevent default scrolling */
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background-color: #ffffff;
+            color: #000000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            overflow-y: hidden; /* Prevent default scrolling */
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            -ms-overflow-style: none; 
+            scrollbar-width: none;  
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            position: relative; 
+            margin-top: -25px; 
+        } 
+
+        .intro-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            position: absolute;
+            top: 125px; 
+            width: 100%;
+            text-align: center;
+            z-index: 5;
+        }
+
+        .title-and-image {
+            position: relative;
+            width: 700px;
+            height: 700px;
+            margin: 0 auto;
+        }
+
+        .circular-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .circular-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .title-img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .title {
+            display: none;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            margin-top: 20px;
+            text-align: center;
+            position: absolute;
+            bottom: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 2rem;
+            margin-top: 20px;
+            justify-content: center;
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .button {
+            display: inline-block;
+            border: 1px solid #000;
+            border-radius: 30px;
+            padding: 0.8rem 2.5rem;
+            font-size: 1rem;
+            font-style: italic;
+            text-decoration: none;
+            color: #000;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: rgba(158, 163, 134, 0.2);
+        }
+
+        /* Common section styles */
+        .section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .side-patterns {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .pattern {
+            width: 150px;
+            height: 100%;
+            background-repeat: repeat-y;
+            background-size: contain;
+        }
+
+        .pattern.left {
+            background-image: url('imgs/bannerside.png');
+        }
+
+        .pattern.right {
+            background-image: url('imgs/bannerside.png');
+        }
+
+        /* Archive section styles */
+        .archive-section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .archive-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            padding: 0 150px;
+        }
+
+        .statue-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        /* Hide text title since we're using image */
+        #statue-title {
+            display: none;
+        }
+
+        /* Styling for title image in archive section */
+        .statue-title-img-container {
+            margin-bottom: 1.5rem;
+            text-align: center;
+            max-width: 550px;
+            width: 100%;
+        }
+
+        #statue-title-img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        #statue-description {
+            text-align: center;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        #statue-image {
+            max-width: 100%;
+            max-height: 300px; 
+            width: auto;
+            height: auto;
+            object-fit: contain; 
+        } 
+
+        .category-selectors {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+
+        .selector-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .title-img-container {
+    margin-bottom: 2rem;
+    text-align: center;
+    max-width: 700px;
+    width: 100%;
+}
+
+.title-img-container img {
+    max-width: 100%;
+    height: auto;
+
+}
+
+        .category-select {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid #000;
+            border-radius: 30px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 120px;
+            text-align: center;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            font-style: italic;
+        }
+
+        .category-select:focus {
+            outline: none;
+        }
+
+        .selector-group label {
+            display: none;
+        }
+
+        /* About section styles */
+        .about-section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            padding: 0 150px;
+            text-align: center;
+        }
+
+        .about-title {
+            font-size: 5rem;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+            font-weight: 400;
+        }
+
+        .about-text {
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .back-to-top {
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .title-and-image {
+                width: 500px;
+                height: 500px;
+            }
+            
+            .title-img {
+                max-width: 450px;
+            }
+            
+            .intro-text {
+                top: 90px;
+            }
+            
+            .tagline {
+                bottom: 120px;
+            }
+            
+            .buttons {
+                bottom: 60px;
+            }
+            
+            .pattern {
+                width: 80px;
+            }
+
+            .archive-content, .about-content {
+                padding: 0 80px;
+            }
+
+            .about-title {
+                font-size: 3.5rem;
+            }
+            
+            .statue-title-img-container {
+                max-width: 350px;
+            }
+            
+            .category-selectors {
+                flex-direction: row;
+                gap: 1rem;
+            }
+            
+            .image-container {
+                height: 350px;
+            }
+            
+            #statue-image {
+                max-height: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title-and-image {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .title-img {
+                max-width: 280px;
+            }
+            
+            .intro-text {
+                top: 50px;
+            }
+            
+            .tagline {
+                bottom: 90px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                gap: 1rem;
+                bottom: 30px;
+            }
+
+            .pattern {
+                width: 40px;
+            }
+
+            .archive-content, .about-content {
+                padding: 0 40px;
+            }
+
+            .about-title {
+                font-size: 2.5rem;
+            }
+            
+            .statue-title-img-container {
+                max-width: 250px;
+            }
+            
+            .category-selectors {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .image-container {
+                height: 250px;
+            }
+            
+            #statue-image {
+                max-height: 250px;
+            }
+            
+            .about-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body id="top">
+    <!-- Home Section -->
+    <div class="container">
+        <p class="intro-text">Introducing...</p>
+        
+        <div class="title-and-image">
+            <img src="imgs/santa.png" alt="STATUESQUE ARCHIVE" class="title-img">
+            
+            <div class="circular-img">
+                <img src="imgs/naysayer.png" alt="Background statue image">
+            </div>
+        </div>
+        
+        <div class="tagline">
+            <p>Feeling statuesque?</p>
+            <p>Take a look!</p>
+        </div>
+        
+        <div class="buttons">
+            <a href="#about" class="button" id="aboutBtn">About</a>
+            <a href="#archive" class="button" id="archiveBtn">Archive</a>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="about-section section">
+              
+        <div class="about-content">
+            
+            <!-- Image title -->
+            <div class="title-img-container">
+                <img src="imgs/about.png" alt="About Us">
+            </div>
+            
+            <div class="about-text">
+                <p>Welcome to the Statuesque Archive, a digital museum dedicated to preserving and showcasing the world's most significant sculptural traditions across cultures and time periods.</p>
+                <p>Explore our archive by region of origin and type, discovering connections between different sculptural traditions and deepening your appreciation for this enduring art form.</p>
+            </div>
+            
+            <div class="back-to-top">
+                <a href="#top" class="button" id="backToTopBtn">Back to Top</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Archive Section -->
+    <section id="archive" class="archive-section section">
+        <div class="side-patterns">
+        </div>
+        
+        <div class="archive-content">
+            <div class="statue-content">
+                <!-- Hidden text title (for accessibility) -->
+                <h2 id="statue-title">FOODOGS</h2>
+                
+                <!-- Image title that will change -->
+                <div class="statue-title-img-container">
+                    <img id="statue-title-img" src="imgs/titles/foodogs-title.png" alt="FOODOGS">
+                </div>
+                
+                <p id="statue-description">A chinese mythical creature, foodogs are these things and they do these things and they come from this era.</p>
+                
+                <div class="image-container">
+                    <img id="statue-image" src="imgs/foodogs.png" alt="Statue">
+                </div>
+                
+                <div class="category-selectors">
+                    <div class="selector-group">
+                        <label for="origin-select">Origin:</label>
+                        <select id="origin-select" class="category-select">
+                            <option value="chinese">Chinese</option>
+                            <option value="europe">Europe</option>
+                            <option value="indian">Indian</option>
+                            <option value="france">France</option>
+                            <option value="aztec">Aztec</option>
+                            <option value="greek">Greek</option>
+                        </select>
+                    </div>
+                    
+                    <div class="selector-group">
+                        <label for="type-select">Type:</label>
+                        <select id="type-select" class="category-select">
+                            <option value="animal">Animal</option>
+                            <option value="body">Body</option>
+                            <option value="head">Head</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Run before content loads
+        if (window.location.hash) {
+            // If there's a hash in the URL, remove it to prevent auto-jumping
+            window.location.hash = '';
+            history.replaceState('', document.title, window.location.pathname);
+        }
+        
+        // Wait for page to fully load
+        window.addEventListener('load', function() {
+            // Manually scroll to top
+            window.scrollTo(0, 0);
+            
+            // Prevent default browser scrolling
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            
+            // Handle Archive button click
+            document.getElementById('archiveBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Enable scrolling temporarily for the animation
+                document.body.style.overflow = 'auto';
+                document.documentElement.style.overflow = 'auto';
+                
+                // Scroll to archive section
+                document.getElementById('archive').scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Re-disable scrolling after animation completes
+                setTimeout(function() {
+                    document.body.style.overflow = 'hidden';
+                    document.documentElement.style.overflow = 'hidden';
+                }, 1000);
+            });
+            
+            // Handle About button click
+            document.getElementById('aboutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Enable scrolling temporarily for the animation
+                document.body.style.overflow = 'auto';
+                document.documentElement.style.overflow = 'auto';
+                
+                // Scroll to about section
+                document.getElementById('about').scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Re-disable scrolling after animation completes
+                setTimeout(function() {
+                    document.body.style.overflow = 'hidden';
+                    document.documentElement.style.overflow = 'hidden';
+                }, 1000);
+            });
+            
+            // Handle Back to Top button click
+            document.getElementById('backToTopBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Enable scrolling temporarily for the animation
+                document.body.style.overflow = 'auto';
+                document.documentElement.style.overflow = 'auto';
+                
+                // Scroll to top
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                
+                // Re-disable scrolling after animation completes
+                setTimeout(function() {
+                    document.body.style.overflow = 'hidden';
+                    document.documentElement.style.overflow = 'hidden';
+                }, 1000);
+                
+                // Remove hash from URL
+                history.pushState('', document.title, window.location.pathname);
+            });
+
+            // Statue data for dynamic content
+            const statueData = {
+                "chinese-animal": {
+                    title: "FOODOGS",
+                    titleImage: "imgs/foodogs.png",
+                    description: "A Chinese mythical creature, Foo Dogs are guardian lions that protect buildings from harmful spiritual influences. They typically appear in pairs and are placed at entrances.",
+                    image: "imgs/chinese-animal.webp"
+                },
+                "chinese-body": {
+                    title: "CONSORT",
+                    titleImage: "imgs/consort.png",
+                    description: "Life-sized stone statues created to accompany Emperor Qin Shi Huang in the afterlife. Over 8,000 unique figures were buried with the emperor around 210 BCE.",
+                    image: "imgs/chinese-body.webp"
+                },
+                "chinese-head": {
+                    title: "BUDDHA HEAD",
+                    titleImage: "imgs/buddha-head.png",
+                    description: "Serene depictions of Buddha's head, representing wisdom and enlightenment in Chinese Buddhist art. Often characterized by elongated earlobes and a calm expression.",
+                    image: "imgs/chinese-head.jpg"
+                },
+                "europe-animal": {
+                    title: "GRIFFIN STATUE",
+                    titleImage: "imgs/gazelle.png",
+                    description: "A legendary creature with the body of a lion and the head and wings of an eagle. In European art, griffins symbolize courage, strength, and divine power.",
+                    image: "imgs/europe-animal.jpg"
+                },
+                "europe-body": {
+                    title: "VENUS DE MILO",
+                    titleImage: "imgs//venus-de-milo.png",
+                    description: "An ancient Greek sculpture from approximately 100 BCE, believed to depict Aphrodite. Known for its missing arms, it exemplifies Hellenistic ideals of beauty.",
+                    image: "imgs/europe-body.jpg"
+                },
+                "europe-head": {
+                    title: "DAVID HEAD",
+                    titleImage: "imgs/david-head.png",
+                    description: "Michelangelo's David, completed in 1504, portrays the Biblical hero with intense concentration before his battle with Goliath, exemplifying Renaissance ideals.",
+                    image: "imgs/europe-head.webp"
+                },
+                "indian-animal": {
+                    title: "NANDI BULL",
+                    titleImage: "imgs/nandi-bull.png",
+                    description: "The sacred bull that serves as the mount of Lord Shiva. Nandi statues are commonly found outside Shiva temples, symbolizing strength and fertility.",
+                    image: "imgs/indian-animal.jpg"
+                },
+                "indian-body": {
+                    title: "DANCING SHIVA",
+                    titleImage: "imgs/dancing-shiva.png",
+                    description: "Nataraja depicts Lord Shiva performing the cosmic dance of creation and destruction. The dancing posture symbolizes the eternal cycle of time.",
+                    image: "imgs/indian-body.jpg"
+                },
+                "indian-head": {
+                    title: "BUDDHA HEAD SARNATH",
+                    titleImage: "imgs/buddha-sarnath.png",
+                    description: "The serene Buddha head from Sarnath represents the moment of enlightenment. Its distinctive features include half-closed eyes and an enigmatic smile.",
+                    image: "imgs/indian-head.jpg"
+                },
+                "france-animal": {
+                    title: "GALLIC DOG",
+                    titleImage: "imgs/gallic-dog.png",
+                    description: "The unofficial national symbol of France, the Gallic Dog (Coq Gaulois) represents vigilance and bravery in French sculptural traditions.",
+                    image: "imgs/france-animal.jpg"
+                },
+                "france-body": {
+                    title: "JESUS H CHRIST",
+                    titleImage: "imgs/jesus-h-christ.png",
+                    description: "Auguste Rodin's famous bronze sculpture depicts a nude male figure in deep contemplation. Created in 1880, it represents philosophy and intellectual struggle.",
+                    image: "imgs/france-body.jpg"
+                },
+                "france-head": {
+                    title: "MARIANNE BUST",
+                    titleImage: "imgs/marianne-bust.png",
+                    description: "The symbolic figure of the French Republic, Marianne represents liberty and reason. Her bust is displayed prominently in government buildings across France.",
+                    image: "imgs/france-head.jpg"
+                },
+                "aztec-animal": {
+                    title: "QUETZALCOATL",
+                    titleImage: "imgs/quetzalcoatl.png",
+                    description: "The feathered serpent deity, one of the most important gods in Mesoamerican culture. Quetzalcoatl represented wisdom, creation, and the boundary between earth and sky.",
+                    image: "imgs/aztec-animal.jpg"
+                },
+                "aztec-body": {
+                    title: "CHACMOOL",
+                    titleImage: "imgs/chacmool.png",
+                    description: "A distinctive type of Mesoamerican sculpture depicting a reclining figure with its head turned to one side, holding a bowl on its stomach for sacrificial offerings.",
+                    image: "imgs/aztec-body.jpg"
+                },
+                "aztec-head": {
+                    title: "COYOLXAUHQUI STONE",
+                    titleImage: "imgs/coyo-stone.png",
+                    description: "A massive circular relief depicting the dismembered goddess Coyolxauhqui, representing the moon. It was discovered at the base of the Templo Mayor in Mexico City.",
+                    image: "imgs/aztec-head.jpeg"
+                },
+                "greek-animal": {
+                    title: "HORSE",
+                    titleImage: "imgs/horse.png",
+                    description: "A horse that guards the entrance to the Underworld in Greek mythology. It prevented the dead from escaping and the living from entering.",
+                    image: "imgs/greek-animal.jpg"
+                },
+                "greek-body": {
+                    title: "DISCOBOLUS",
+                    titleImage: "imgs/discobolus.png",
+                    description: "The Discus Thrower, a famous Greek sculpture depicting an athlete in the moment before releasing a discus. It exemplifies the Classical period's focus on human movement.",
+                    image: "imgs/greek-body.webp"
+                },
+                "greek-head": {
+                    title: "HERMES HEAD",
+                    titleImage: "imgs/hermes-head.png",
+                    description: "Portraying the messenger god Hermes, these sculptures often feature a youthful face with curly hair, embodying the Classical Greek ideal of male beauty.",
+                    image: "imgs/greek-head.jpg"
+                }
+            };
+            
+            // Function to update content based on selection
+            function updateContent() {
+                const origin = document.getElementById('origin-select').value;
+                const type = document.getElementById('type-select').value;
+                
+                const key = origin + '-' + type;
+              
+                const data = statueData[key];
+                
+                if (data) {
+                    // Update hidden text title (for accessibility)
+                    document.getElementById('statue-title').textContent = data.title;
+                    
+                    // Update title image
+                    document.getElementById('statue-title-img').src = data.titleImage;
+                    document.getElementById('statue-title-img').alt = data.title;
+                    
+                    // Update description and image
+                    document.getElementById('statue-description').textContent = data.description;
+                    document.getElementById('statue-image').src = data.image;
+                    document.getElementById('statue-image').alt = data.title;
+                }
+            }
+            
+            // Add event listeners to dropdowns
+            document.getElementById('origin-select').addEventListener('change', updateContent);
+            document.getElementById('type-select').addEventListener('change', updateContent);
+            
+            // Initialize with default content
+            updateContent();
+        });
+    </script>
+</body>
+</html>
